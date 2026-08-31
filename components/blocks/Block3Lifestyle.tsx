@@ -145,49 +145,59 @@ export const Block3Lifestyle: React.FC<Block3LifestyleProps> = ({
         onStart={startRecording}
         onStop={handleStopAndExtract}
         error={errorMessage || recorderError}
-        helperText='e.g., "High stress recently, alternate day wash, mild smoking"'
+        title="Voice Copilot (Questions 10 & 11)"
+        scopeText="Answers Recent Triggers, Habits, Water & Salon Treatments together"
+        helperText='e.g., "High stress past 6 months, hard water at home, wash hair alternate days"'
       />
 
       {/* AI Extraction Confirmation Card */}
       {extractedTranscript && (
-        <ConfirmationCard
-          transcript={extractedTranscript}
-          isEditing={isEditingExtracted}
-          onToggleEdit={() => setIsEditingExtracted(!isEditingExtracted)}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[15px]">
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
-              <span className="text-ink-muted text-[13px] block">Recent Triggers:</span>
-              <span className="font-semibold text-green-deep">
-                {data.past_6_months.length > 0 ? data.past_6_months.join(', ') : 'None reported'}
-              </span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Wash Frequency:</span>
-              <span className="font-semibold text-green-deep">{data.habits.hair_wash_frequency}</span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Smoking:</span>
-              <span className="font-semibold text-green-deep">
-                {data.habits.smoking ? `Yes (${data.habits.smoking_severity || 'Unspecified'})` : 'No'}
-              </span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Hard Water:</span>
-              <span className="font-semibold text-green-deep">{data.habits.hard_water ? 'Yes' : 'No'}</span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Chemical/Salon:</span>
-              <span className="font-semibold text-green-deep">
-                {data.habits.salon_treatments ? `Yes (${data.habits.salon_treatment_detail || 'Detail noted'})` : 'No'}
-              </span>
-            </div>
+        <div className="flex flex-col gap-2 animate-in fade-in zoom-in-95">
+          <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-[14px] text-green-900 flex items-center gap-2">
+            <span>✓</span>
+            <span className="font-semibold">
+              Questions 10 &amp; 11 auto-filled from your voice! Review the fields below, then tap &ldquo;Continue to Treatments&rdquo; at the bottom.
+            </span>
           </div>
-        </ConfirmationCard>
+          <ConfirmationCard
+            transcript={extractedTranscript}
+            isEditing={isEditingExtracted}
+            onToggleEdit={() => setIsEditingExtracted(!isEditingExtracted)}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[15px]">
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
+                <span className="text-ink-muted text-[13px] block">Recent Triggers:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.past_6_months.length > 0 ? data.past_6_months.join(', ') : 'None reported'}
+                </span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Wash Frequency:</span>
+                <span className="font-semibold text-green-deep">{data.habits.hair_wash_frequency}</span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Smoking:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.habits.smoking ? `Yes (${data.habits.smoking_severity || 'Unspecified'})` : 'No'}
+                </span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Hard Water:</span>
+                <span className="font-semibold text-green-deep">{data.habits.hard_water ? 'Yes' : 'No'}</span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Chemical/Salon:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.habits.salon_treatments ? `Yes (${data.habits.salon_treatment_detail || 'Detail noted'})` : 'No'}
+                </span>
+              </div>
+            </div>
+          </ConfirmationCard>
+        </div>
       )}
 
       {/* Manual Interactive Form */}

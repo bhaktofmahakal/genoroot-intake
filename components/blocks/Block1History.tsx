@@ -170,44 +170,54 @@ export const Block1History: React.FC<Block1HistoryProps> = ({
         onStart={startRecording}
         onStop={handleStopAndExtract}
         error={errorMessage || recorderError}
-        helperText='e.g., "Started at age 48, father had hair loss, thinning at crown"'
+        title="Voice Copilot (Questions 1 to 4)"
+        scopeText="Answers Age, Duration, Family History & Scalp Pattern together"
+        helperText='e.g., "Started at age 48, my father had hair loss, noticed crown thinning"'
       />
 
       {/* AI Extraction Confirmation Card (if voice was used) */}
       {extractedTranscript && (
-        <ConfirmationCard
-          transcript={extractedTranscript}
-          isEditing={isEditingExtracted}
-          onToggleEdit={() => setIsEditingExtracted(!isEditingExtracted)}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[15px]">
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Age Onset:</span>
-              <span className="font-semibold text-green-deep">
-                {data.age_hair_loss_began ? `${data.age_hair_loss_began} years old` : 'Not provided'}
-              </span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
-              <span className="text-ink-muted text-[13px] block">Duration:</span>
-              <span className="font-semibold text-green-deep">{data.duration}</span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
-              <span className="text-ink-muted text-[13px] block">Family History:</span>
-              <span className="font-semibold text-green-deep">
-                {data.family_history.join(', ') || 'None selected'}
-              </span>
-            </div>
-
-            <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
-              <span className="text-ink-muted text-[13px] block">Pattern:</span>
-              <span className="font-semibold text-green-deep">
-                {data.pattern.join(', ') || 'None selected'}
-              </span>
-            </div>
+        <div className="flex flex-col gap-2 animate-in fade-in zoom-in-95">
+          <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-[14px] text-green-900 flex items-center gap-2">
+            <span>✓</span>
+            <span className="font-semibold">
+              Questions 1–4 auto-filled from your voice! Review the fields below, then tap &ldquo;Continue to Section B&rdquo; at the bottom.
+            </span>
           </div>
-        </ConfirmationCard>
+          <ConfirmationCard
+            transcript={extractedTranscript}
+            isEditing={isEditingExtracted}
+            onToggleEdit={() => setIsEditingExtracted(!isEditingExtracted)}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[15px]">
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Age Onset:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.age_hair_loss_began ? `${data.age_hair_loss_began} years old` : 'Not provided'}
+                </span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle">
+                <span className="text-ink-muted text-[13px] block">Duration:</span>
+                <span className="font-semibold text-green-deep">{data.duration}</span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
+                <span className="text-ink-muted text-[13px] block">Family History:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.family_history.join(', ') || 'None selected'}
+                </span>
+              </div>
+
+              <div className="bg-canvas p-3 rounded-lg border border-border-subtle col-span-1 sm:col-span-2">
+                <span className="text-ink-muted text-[13px] block">Pattern:</span>
+                <span className="font-semibold text-green-deep">
+                  {data.pattern.join(', ') || 'None selected'}
+                </span>
+              </div>
+            </div>
+          </ConfirmationCard>
+        </div>
       )}
 
       {/* Manual Tap Controls (Always available as primary or edit fallback) */}
@@ -301,7 +311,7 @@ export const Block1History: React.FC<Block1HistoryProps> = ({
               : 'bg-border-hairline text-ink-muted cursor-not-allowed opacity-70'
           }`}
         >
-          <span>Continue to Health & Hormones</span>
+          <span>Continue to Section B: Health (Step 2 of 6)</span>
           <span>→</span>
         </button>
       </div>
