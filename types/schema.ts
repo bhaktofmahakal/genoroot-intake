@@ -251,7 +251,7 @@ export const createDefaultIntakeState = (): GenoRootIntakePayload => ({
   form: 'GenoRoot Hair & Scalp Intake',
   section_A: {
     age_hair_loss_began: null as unknown as number,
-    duration: 'Less than 6 months',
+    duration: '' as unknown as DurationOption,
     family_history: [],
     pattern: [],
   },
@@ -269,7 +269,7 @@ export const createDefaultIntakeState = (): GenoRootIntakePayload => ({
       smoking_severity: null,
       alcohol: false,
       hard_water: false,
-      hair_wash_frequency: 'Alternate Days',
+      hair_wash_frequency: '' as unknown as HairWashFrequencyOption,
       heating_tools_styling_chemicals: false,
       salon_treatments: false,
       salon_treatment_detail: '',
@@ -293,7 +293,7 @@ export const createDefaultIntakeState = (): GenoRootIntakePayload => ({
     past_treatment_side_effects_describe: '',
   },
   section_E: {
-    sample_type: 'Saliva',
+    sample_type: '' as unknown as SampleTypeOption,
     consent: false as unknown as true,
   },
 });
