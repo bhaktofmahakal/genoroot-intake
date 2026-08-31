@@ -41,7 +41,7 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({
 
   // Only render if debug param is present OR user manually opens via hidden corner trigger
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
+    <div id="debug-panel" className="no-print fixed bottom-4 right-4 z-50 flex flex-col items-end">
       {/* Floating Toggle Button */}
       <button
         type="button"

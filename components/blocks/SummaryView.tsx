@@ -53,10 +53,36 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
     window.print();
   };
 
+  const formattedDate = new Date().toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <div className="flex flex-col gap-6 block-enter">
-      {/* Success Header Banner */}
-      <div className="bg-surface-tint-sage border-2 border-green-primary/50 p-6 rounded-card flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left shadow-sm">
+      {/* Printable Clinic Letterhead (Only visible when printing) */}
+      <div className="hidden print:block border-b-2 border-green-800 pb-3 mb-2">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-[18pt] font-bold text-green-900 leading-tight">
+              GenoRoot Trichology &amp; Scalp Genetics Clinic
+            </h1>
+            <p className="text-[10pt] text-gray-600 mt-0.5">
+              Confidential Patient Medical Intake &amp; Phenotypic Triaging Evaluation
+            </p>
+          </div>
+          <div className="text-right text-[9pt] text-gray-500">
+            <div><strong>Date:</strong> {formattedDate}</div>
+            <div><strong>Status:</strong> Validated (16 Questions)</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Success Header Banner (Screen Only) */}
+      <div className="no-print bg-surface-tint-sage border-2 border-green-primary/50 p-6 rounded-card flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left shadow-sm">
         <div className="w-14 h-14 rounded-full bg-green-primary text-white flex items-center justify-center flex-shrink-0 shadow-md">
           <CheckCircle2 className="w-8 h-8" />
         </div>
@@ -70,8 +96,8 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
         </div>
       </div>
 
-      {/* Primary Deliverable Actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {/* Primary Deliverable Actions (Screen Only) */}
+      <div className="no-print grid grid-cols-1 sm:grid-cols-3 gap-3">
         <button
           type="button"
           onClick={handleCopy}
@@ -100,51 +126,51 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
         </button>
       </div>
 
-      {/* Clinical Triaging & Biomarker Target Preview (Product Depth Highlight) */}
-      <div className="bg-surface-card border-2 border-green-accent/40 rounded-card p-5 shadow-card flex flex-col gap-4">
-        <div className="flex items-center justify-between border-b border-border-hairline pb-3">
+      {/* Clinical Triaging & Biomarker Target Preview */}
+      <div className="bg-surface-card border-2 border-green-accent/40 rounded-card p-5 shadow-card flex flex-col gap-4 print:border print:p-3 print:mb-2 break-inside-avoid">
+        <div className="flex items-center justify-between border-b border-border-hairline pb-3 print:pb-1.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-surface-tint-sage flex items-center justify-center text-green-primary">
+            <div className="no-print w-8 h-8 rounded-full bg-surface-tint-sage flex items-center justify-center text-green-primary">
               <Dna className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[17px] text-green-deep block">
+              <span className="font-bold text-[17px] print:text-[13pt] text-green-deep block">
                 Preliminary Clinical Triage &amp; Biomarker Targets
               </span>
-              <span className="text-[13px] text-ink-muted">
-                Inferred from your submitted personal history and scalp patterns
+              <span className="text-[13px] print:text-[9pt] text-ink-muted">
+                Inferred from submitted patient personal history and scalp patterns
               </span>
             </div>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[12px] font-bold bg-surface-tint-sage text-green-deep border border-green-primary/30">
+          <span className="px-2.5 py-1 rounded-full text-[12px] print:text-[9pt] font-bold bg-surface-tint-sage text-green-deep border border-green-primary/30">
             {triaging.urgencyLevel} Priority
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[14px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-2 text-[14px]">
           {/* Primary Phenotype */}
-          <div className="bg-canvas p-4 rounded-card border border-border-subtle flex flex-col gap-1">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-green-primary">
+          <div className="bg-canvas print:bg-white p-4 print:p-2.5 rounded-card border border-border-subtle flex flex-col gap-1">
+            <span className="text-[12px] print:text-[9pt] uppercase font-bold tracking-wider text-green-primary">
               Primary Phenotypic Profile:
             </span>
-            <span className="text-[16px] font-bold text-green-deep">
+            <span className="text-[16px] print:text-[11pt] font-bold text-green-deep">
               {triaging.primaryPhenotype}
             </span>
-            <p className="text-ink-secondary text-[13px] mt-1 leading-relaxed">
+            <p className="text-ink-secondary text-[13px] print:text-[9pt] mt-1 leading-relaxed">
               {triaging.phenotypeDescription}
             </p>
           </div>
 
           {/* Key Biomarkers */}
-          <div className="bg-canvas p-4 rounded-card border border-border-subtle flex flex-col gap-2">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-green-primary">
+          <div className="bg-canvas print:bg-white p-4 print:p-2.5 rounded-card border border-border-subtle flex flex-col gap-2">
+            <span className="text-[12px] print:text-[9pt] uppercase font-bold tracking-wider text-green-primary">
               Recommended Biomarker Assay Targets:
             </span>
             <div className="flex flex-wrap gap-1.5">
               {triaging.keyBiomarkers.map((bio, idx) => (
                 <span
                   key={idx}
-                  className="bg-white border border-border-hairline px-2.5 py-1 rounded-md text-[13px] font-medium text-ink-primary shadow-xs"
+                  className="bg-white border border-border-hairline px-2.5 py-1 rounded-md text-[13px] print:text-[9pt] font-medium text-ink-primary shadow-xs"
                 >
                   🧬 {bio}
                 </span>
@@ -153,13 +179,13 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           </div>
 
           {/* Priority Clinical Flags */}
-          <div className="bg-canvas p-4 rounded-card border border-border-subtle col-span-1 sm:col-span-2 flex flex-col gap-2">
-            <span className="text-[12px] uppercase font-bold tracking-wider text-terracotta">
+          <div className="bg-canvas print:bg-white p-4 print:p-2.5 rounded-card border border-border-subtle col-span-1 sm:col-span-2 flex flex-col gap-2">
+            <span className="text-[12px] print:text-[9pt] uppercase font-bold tracking-wider text-terracotta">
               Physiological &amp; Environmental Flags:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {triaging.priorityFlags.map((flag, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-[13px] text-ink-primary">
+                <div key={idx} className="flex items-center gap-2 text-[13px] print:text-[9pt] text-ink-primary">
                   <AlertCircle className="w-3.5 h-3.5 text-terracotta flex-shrink-0" />
                   <span>{flag}</span>
                 </div>
@@ -169,8 +195,8 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
         </div>
       </div>
 
-      {/* Tab Switcher: Formatted Review Cards vs Raw JSON */}
-      <div className="flex items-center justify-between border-b border-border-hairline pb-2 mt-2">
+      {/* Tab Switcher (Screen Only) */}
+      <div className="no-print flex items-center justify-between border-b border-border-hairline pb-2 mt-2">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -208,102 +234,102 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
       </div>
 
       {showRawJson ? (
-        /* Raw Schema JSON Viewer */
-        <div className="relative bg-ink-primary text-green-soft p-5 rounded-card overflow-x-auto text-[14px] font-mono leading-relaxed shadow-lg border border-green-deep">
+        /* Raw Schema JSON Viewer (Screen Only) */
+        <div className="no-print relative bg-ink-primary text-green-soft p-5 rounded-card overflow-x-auto text-[14px] font-mono leading-relaxed shadow-lg border border-green-deep">
           <pre>{jsonString}</pre>
         </div>
       ) : (
         /* Structured Clinical Review Cards */
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 print:gap-2">
           {/* Section A */}
-          <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <span className="font-bold text-green-deep text-[17px]">
+          <div className="bg-surface-card p-5 print:p-3 rounded-card border border-border-hairline shadow-card flex flex-col gap-3 print:gap-1.5 break-inside-avoid">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-2 print:pb-1">
+              <span className="font-bold text-green-deep text-[17px] print:text-[11pt]">
                 Section A: Personal &amp; Family Hair History
               </span>
               <button
                 type="button"
                 onClick={() => onEditStep(1)}
-                className="flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
+                className="no-print flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
               >
                 <Edit2 className="w-3.5 h-3.5" /> Edit
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px] print:text-[10pt]">
               <div>
-                <span className="text-ink-muted text-[13px] block">Age Onset:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Age Onset:</span>
                 <span className="font-medium">{payload.section_A.age_hair_loss_began} years</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Duration:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Duration:</span>
                 <span className="font-medium">{payload.section_A.duration}</span>
               </div>
               <div className="sm:col-span-2">
-                <span className="text-ink-muted text-[13px] block">Family History:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Family History:</span>
                 <span className="font-medium">{payload.section_A.family_history.join(', ')}</span>
               </div>
               <div className="sm:col-span-2">
-                <span className="text-ink-muted text-[13px] block">Pattern:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Pattern:</span>
                 <span className="font-medium">{payload.section_A.pattern.join(', ')}</span>
               </div>
             </div>
           </div>
 
           {/* Section B */}
-          <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <span className="font-bold text-green-deep text-[17px]">
+          <div className="bg-surface-card p-5 print:p-3 rounded-card border border-border-hairline shadow-card flex flex-col gap-3 print:gap-1.5 break-inside-avoid">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-2 print:pb-1">
+              <span className="font-bold text-green-deep text-[17px] print:text-[11pt]">
                 Section B: Hormonal &amp; Health Influences
               </span>
               <button
                 type="button"
                 onClick={() => onEditStep(2)}
-                className="flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
+                className="no-print flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
               >
                 <Edit2 className="w-3.5 h-3.5" /> Edit
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px] print:text-[10pt]">
               <div className="sm:col-span-2">
-                <span className="text-ink-muted text-[13px] block">Diagnosed Conditions:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Diagnosed Conditions:</span>
                 <span className="font-medium">{payload.section_B.diagnosed_conditions.join(', ')}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Menstrual Cycle (Q6):</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Menstrual Cycle (Q6):</span>
                 <span className="font-medium">{payload.section_B.menstrual_cycle}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Pregnancy Status (Q7):</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Pregnancy Status (Q7):</span>
                 <span className="font-medium">{payload.section_B.pregnancy_related}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Adult Acne / Oily Skin:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Adult Acne / Oily Skin:</span>
                 <span className="font-medium">{payload.section_B.adult_acne_oily_skin ? 'Yes' : 'No'}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Excess Body/Facial Hair:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Excess Body/Facial Hair:</span>
                 <span className="font-medium">{payload.section_B.excess_body_facial_hair ? 'Yes' : 'No'}</span>
               </div>
             </div>
           </div>
 
           {/* Section C */}
-          <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <span className="font-bold text-green-deep text-[17px]">
+          <div className="bg-surface-card p-5 print:p-3 rounded-card border border-border-hairline shadow-card flex flex-col gap-3 print:gap-1.5 break-inside-avoid">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-2 print:pb-1">
+              <span className="font-bold text-green-deep text-[17px] print:text-[11pt]">
                 Section C: Lifestyle &amp; Environmental Triggers
               </span>
               <button
                 type="button"
                 onClick={() => onEditStep(3)}
-                className="flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
+                className="no-print flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
               >
                 <Edit2 className="w-3.5 h-3.5" /> Edit
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px] print:text-[10pt]">
               <div className="sm:col-span-2">
-                <span className="text-ink-muted text-[13px] block">Past 6 Months Triggers:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Past 6 Months Triggers:</span>
                 <span className="font-medium">
                   {payload.section_C.past_6_months.length > 0
                     ? payload.section_C.past_6_months.join(', ')
@@ -311,11 +337,11 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Wash Frequency:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Wash Frequency:</span>
                 <span className="font-medium">{payload.section_C.habits.hair_wash_frequency}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Smoking:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Smoking:</span>
                 <span className="font-medium">
                   {payload.section_C.habits.smoking
                     ? `Yes (${payload.section_C.habits.smoking_severity || 'Unspecified'})`
@@ -323,33 +349,33 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Hard Water:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Hard Water:</span>
                 <span className="font-medium">{payload.section_C.habits.hard_water ? 'Yes' : 'No'}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Alcohol:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Alcohol:</span>
                 <span className="font-medium">{payload.section_C.habits.alcohol ? 'Yes' : 'No'}</span>
               </div>
             </div>
           </div>
 
           {/* Section D */}
-          <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <span className="font-bold text-green-deep text-[17px]">
+          <div className="bg-surface-card p-5 print:p-3 rounded-card border border-border-hairline shadow-card flex flex-col gap-3 print:gap-1.5 break-inside-avoid">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-2 print:pb-1">
+              <span className="font-bold text-green-deep text-[17px] print:text-[11pt]">
                 Section D: Hair Care &amp; Past Treatments
               </span>
               <button
                 type="button"
                 onClick={() => onEditStep(4)}
-                className="flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
+                className="no-print flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
               >
                 <Edit2 className="w-3.5 h-3.5" /> Edit
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[15px]">
+            <div className="flex flex-col gap-2 text-[15px] print:text-[10pt]">
               <div>
-                <span className="text-ink-muted text-[13px] block">Products Used:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Products Used:</span>
                 <span className="font-medium">
                   {Object.entries(payload.section_D.products)
                     .filter(([_, item]) => item.used)
@@ -358,7 +384,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Procedures Done:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Procedures Done:</span>
                 <span className="font-medium">
                   {Object.entries(payload.section_D.procedures)
                     .filter(([_, item]) => item.done)
@@ -367,7 +393,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Side Effects:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Side Effects:</span>
                 <span className="font-medium">
                   {payload.section_D.past_treatment_side_effects
                     ? `Yes — ${payload.section_D.past_treatment_side_effects_describe || 'Noted'}`
@@ -378,26 +404,26 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           </div>
 
           {/* Section E */}
-          <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <span className="font-bold text-green-deep text-[17px]">
+          <div className="bg-surface-card p-5 print:p-3 rounded-card border border-border-hairline shadow-card flex flex-col gap-3 print:gap-1.5 break-inside-avoid">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-2 print:pb-1">
+              <span className="font-bold text-green-deep text-[17px] print:text-[11pt]">
                 Section E: Sample Collection &amp; Consent
               </span>
               <button
                 type="button"
                 onClick={() => onEditStep(6)}
-                className="flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
+                className="no-print flex items-center gap-1 text-[14px] font-semibold text-green-primary hover:underline"
               >
                 <Edit2 className="w-3.5 h-3.5" /> Edit
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[15px] print:text-[10pt]">
               <div>
-                <span className="text-ink-muted text-[13px] block">Sample Type Preference:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Sample Type Preference:</span>
                 <span className="font-medium">{payload.section_E.sample_type}</span>
               </div>
               <div>
-                <span className="text-ink-muted text-[13px] block">Clinical Consent:</span>
+                <span className="text-ink-muted text-[13px] print:text-[9pt] block">Clinical Consent:</span>
                 <span className="font-medium text-green-primary">✓ Authorized &amp; Signed</span>
               </div>
             </div>
