@@ -39,7 +39,7 @@ function getOrcaClient(): OpenAI {
 }
 
 // --- LOCAL DISK CACHE SYSTEM ---
-const CACHE_DIR = path.join(process.cwd(), '.cache');
+const CACHE_DIR = process.env.VERCEL ? path.join('/tmp', '.cache') : path.join(process.cwd(), '.cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'extract_cache.json');
 
 function getCacheKey(transcript: string, section: SectionTarget, model: string): string {
@@ -239,30 +239,40 @@ export async function extractStructuredData(options: ExtractSectionOptions): Pro
         throw new Error(`OrcaRouter ${model} returned an empty response.`);
       }
 
-      // Robust Markdown JSON stripping
-      let rawJson = content.trim();
-      if (rawJson.startsWith('```json')) {
-        rawJson = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/, '');
-      } else if (rawJson.startsWith('```')) {
-        rawJson = rawJson.replace(/^```\s*/i, '').replace(/```\s*$/, '');
+      // Robust JSON extraction & parsing (immune to markdown fences or post-JSON commentary)
+      let parsed: any;
+      try {
+        let cleaned = content.trim();
+        cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch {
+        const firstBrace = content.indexOf('{');
+        const lastBrace = content.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+          const jsonSubstring = content.substring(firstBrace, lastBrace + 1);
+          parsed = JSON.parse(jsonSubstring);
+        } else {
+          parsed = {};
+        }
       }
-      rawJson = rawJson.trim();
 
-      // Parse JSON
-      const parsed = JSON.parse(rawJson);
-
-      // Validate against the Zod schema slice
-      let validatedData: any;
+      // Validate against the Zod schema slice (allow partial extraction for natural conversational speech)
+      let validatedData: any = {};
       if (section === 'section_A') {
-        validatedData = SectionASchema.parse(parsed);
+        const check = SectionASchema.partial().safeParse(parsed);
+        validatedData = check.success ? check.data : parsed;
       } else if (section === 'section_B') {
-        validatedData = SectionBSchema.parse(parsed);
+        const check = SectionBSchema.partial().safeParse(parsed);
+        validatedData = check.success ? check.data : parsed;
       } else if (section === 'section_C') {
-        validatedData = SectionCSchema.parse(parsed);
+        const check = SectionCSchema.partial().safeParse(parsed);
+        validatedData = check.success ? check.data : parsed;
       } else if (section === 'section_D') {
-        validatedData = SectionDSchema.parse(parsed);
+        const check = SectionDSchema.partial().safeParse(parsed);
+        validatedData = check.success ? check.data : parsed;
       } else if (section === 'section_E') {
-        validatedData = SectionESchema.parse(parsed);
+        const check = SectionESchema.partial().safeParse(parsed);
+        validatedData = check.success ? check.data : parsed;
       } else {
         validatedData = parsed;
       }

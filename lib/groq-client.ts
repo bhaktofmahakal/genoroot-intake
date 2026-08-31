@@ -1,30 +1,8 @@
-import OpenAI from 'openai';
-
 /**
  * Groq Whisper Audio Transcription Client
- * Uses OpenAI-compatible API endpoint: https://api.groq.com/openai/v1
+ * Uses direct fetch to Groq's Whisper API: https://api.groq.com/openai/v1/audio/transcriptions
  * Model: whisper-large-v3-turbo (ultra-low latency transcription)
  */
-
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-let groqClientInstance: OpenAI | null = null;
-
-function getGroqClient(): OpenAI {
-  const apiKey = process.env.GROQ_API_KEY || GROQ_API_KEY;
-  if (!apiKey) {
-    throw new Error('GROQ_API_KEY environment variable is missing.');
-  }
-
-  if (!groqClientInstance) {
-    groqClientInstance = new OpenAI({
-      apiKey,
-      baseURL: 'https://api.groq.com/openai/v1',
-    });
-  }
-
-  return groqClientInstance;
-}
 
 export interface TranscribeAudioOptions {
   file: File | Blob | Buffer;
@@ -46,18 +24,19 @@ export async function transcribeAudio(options: TranscribeAudioOptions): Promise<
     maxRetries = 3,
   } = options;
 
-  const client = getGroqClient();
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new Error('GROQ_API_KEY environment variable is missing.');
+  }
 
-  // Convert to a File object acceptable by the OpenAI client
-  let fileToUpload: File;
-  if (file instanceof File) {
-    fileToUpload = file;
-  } else if (file instanceof Blob) {
-    fileToUpload = new File([file], filename, { type: file.type || 'audio/webm' });
+  // Convert input to a standard Blob/File object
+  let blob: Blob;
+  if (file instanceof Blob || file instanceof File) {
+    blob = file;
   } else {
     // Buffer in Node.js
     const uint8Array = new Uint8Array(file);
-    fileToUpload = new File([uint8Array], filename, { type: 'audio/webm' });
+    blob = new Blob([uint8Array], { type: 'audio/webm' });
   }
 
   let attempt = 0;
@@ -66,28 +45,44 @@ export async function transcribeAudio(options: TranscribeAudioOptions): Promise<
   while (attempt < maxRetries) {
     attempt++;
     try {
-      const response = await client.audio.transcriptions.create({
-        file: fileToUpload,
-        model: 'whisper-large-v3-turbo',
-        prompt,
-        response_format: 'json',
-        temperature: 0.0,
-        ...(language ? { language } : {}),
+      const formData = new FormData();
+      formData.append('file', blob, filename);
+      formData.append('model', 'whisper-large-v3-turbo');
+      formData.append('response_format', 'json');
+      formData.append('temperature', '0.0');
+      if (prompt) formData.append('prompt', prompt);
+      if (language) formData.append('language', language);
+
+      const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: formData,
       });
 
-      if (!response.text) {
+      if (!response.ok) {
+        const errorText = await response.text();
+        if (response.status === 429 && attempt < maxRetries) {
+          console.warn(`[Groq Whisper] Rate limited (attempt ${attempt}/${maxRetries}). Retrying in ${delay}ms...`);
+          await new Promise((res) => setTimeout(res, delay));
+          delay *= 2;
+          continue;
+        }
+        throw new Error(`Groq API error ${response.status}: ${errorText}`);
+      }
+
+      const result = await response.json();
+      if (!result.text) {
         throw new Error('Groq Whisper returned an empty transcription.');
       }
 
-      return response.text.trim();
+      return result.text.trim();
     } catch (error: any) {
-      const isRateLimit = error?.status === 429 || error?.message?.includes('rate_limit') || error?.message?.includes('429');
-      const isNetworkError = error?.code === 'ECONNRESET' || error?.code === 'ETIMEDOUT';
-
-      if ((isRateLimit || isNetworkError) && attempt < maxRetries) {
-        console.warn(`[Groq Whisper] Rate limited or network error (attempt ${attempt}/${maxRetries}). Retrying in ${delay}ms...`);
+      if (attempt < maxRetries && (error?.message?.includes('429') || error?.name === 'TypeError')) {
+        console.warn(`[Groq Whisper] Retryable error (attempt ${attempt}/${maxRetries}). Retrying in ${delay}ms...`);
         await new Promise((res) => setTimeout(res, delay));
-        delay *= 2; // exponential backoff
+        delay *= 2;
       } else {
         console.error('[Groq Whisper Error]', error);
         throw new Error(`Groq Whisper transcription failed: ${error?.message || error}`);

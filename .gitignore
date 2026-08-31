@@ -26,14 +26,16 @@ yarn-error.log*
 .markdown-collab/
 *.tsbuildinfo
 scripts/git-setup.ts
-scripts/test-audio/
+scripts/*
 
 # Internal Planning Docs (Only README.md is submitted)
 PRD.md
 DESIGN.md
-
+scripts
 # OS & Editor files
 .DS_Store
 *.pem
 .vscode/
 .idea/
+
+.vercel
