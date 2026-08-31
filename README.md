@@ -4,6 +4,14 @@
 
 ---
 
+## 🌐 Live Demo & Repository
+
+* **Live Production URL:** [https://genoroot-intake-pearl.vercel.app](https://genoroot-intake-pearl.vercel.app)
+* **Dev Inspector Mode:** [https://genoroot-intake-pearl.vercel.app?debug=true](https://genoroot-intake-pearl.vercel.app?debug=true)
+* **GitHub Repository:** [https://github.com/bhaktofmahakal/genoroot-intake](https://github.com/bhaktofmahakal/genoroot-intake)
+
+---
+
 ## 🌟 Key Features
 
 1. **Snappy & Intuitive Modality Choices**
