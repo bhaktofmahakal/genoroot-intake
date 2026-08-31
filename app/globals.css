@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Canvas & Background Floor */
+  --canvas: #F8F6F0;
+  --canvas-muted: #F0ECE2;
+  --surface-card: #FFFFFF;
+  --surface-card-hover: #FDFCFB;
+  --surface-tint-sage: #E7EFEA;
+  --surface-tint-warm: #F9EBE7;
+
+  /* Botanical Sage Palette */
+  --green-deep: #1E3932;
+  --green-primary: #2D4F3E;
+  --green-accent: #3E6B54;
+  --green-soft: #D4E9E2;
+
+  /* Warm Terracotta Accent */
+  --terracotta: #BA5D3F;
+  --terracotta-dark: #9E4A30;
+  --terracotta-pulse: rgba(186, 93, 63, 0.22);
+
+  /* High Contrast Typography */
+  --ink-primary: #1A2621;
+  --ink-secondary: #42544B;
+  --ink-muted: #66786F;
+  --ink-inverse: #FFFFFF;
+
+  /* Hairlines & Borders */
+  --border-hairline: #D6D1C4;
+  --border-active: #2D4F3E;
+  --border-subtle: #E8E4D9;
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--ink-primary);
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Scrollbar for warm aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D6D1C4;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2D4F3E;
+}
+
+/* Accessibility Focus Ring */
+*:focus-visible {
+  outline: 3px solid rgba(45, 79, 62, 0.4);
+  outline-offset: 2px;
+}
+
+/* Tap Target Sizing Guarantee for 55+ Mobile */
+button, input, select, textarea, [role="button"], [role="checkbox"], [role="radio"] {
+  touch-action: manipulation;
+}
+
+/* Smooth Accordion Transitions */
+.accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion-content.expanded {
+  grid-template-rows: 1fr;
+}
+
+.accordion-inner {
+  overflow: hidden;
+}
+
+/* Snappy Block Page Transition (190ms) */
+@keyframes blockSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.block-enter {
+  animation: blockSlideIn 190ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
