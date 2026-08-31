@@ -23,6 +23,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .turbo
+.markdown-collab/
+*.tsbuildinfo
+scripts/git-setup.ts
+scripts/test-audio/
 
 # Internal Planning Docs (Only README.md is submitted)
 PRD.md
