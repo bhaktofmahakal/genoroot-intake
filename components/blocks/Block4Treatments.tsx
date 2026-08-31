@@ -270,6 +270,40 @@ export const Block4Treatments: React.FC<Block4TreatmentsProps> = ({
         </div>
       </div>
 
+      {/* Q14: Past side effects or poor response */}
+      <div className="bg-surface-card p-5 rounded-card border border-border-hairline shadow-card flex flex-col gap-3">
+        <YesNoToggle
+          label="14. Have you experienced adverse side effects or poor response from any past hair treatments?"
+          sublabel="e.g. Scalp dermatitis, flaking, heart palpitations from minoxidil, or sudden shedding spikes"
+          value={data.past_treatment_side_effects}
+          onChange={(val) => {
+            onChange({
+              ...data,
+              past_treatment_side_effects: val,
+              past_treatment_side_effects_describe: val ? data.past_treatment_side_effects_describe || '' : '',
+            });
+          }}
+        />
+
+        <div className={`accordion-content ${data.past_treatment_side_effects ? 'expanded' : ''}`}>
+          <div className="accordion-inner pt-3 flex flex-col gap-1.5">
+            <label htmlFor="side_effects_desc" className="text-[14px] font-medium text-ink-secondary">
+              Please describe the reaction and which product/treatment caused it:
+            </label>
+            <textarea
+              id="side_effects_desc"
+              rows={3}
+              placeholder="e.g., Severe itching and redness with 5% topical minoxidil, stopped after 2 weeks"
+              value={data.past_treatment_side_effects_describe || ''}
+              onChange={(e) =>
+                onChange({ ...data, past_treatment_side_effects_describe: e.target.value })
+              }
+              className="w-full p-3 rounded-lg border border-border-hairline bg-canvas text-[16px] text-ink-primary focus:border-green-primary outline-none resize-none"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Sticky Bottom Action Bar */}
       <div className="sticky bottom-0 z-30 bg-canvas/95 backdrop-blur-md pt-3 pb-6 border-t border-border-hairline/60 -mx-4 px-4 sm:mx-0 sm:px-0">
         <button
@@ -277,7 +311,7 @@ export const Block4Treatments: React.FC<Block4TreatmentsProps> = ({
           onClick={onNext}
           className="w-full min-h-[54px] rounded-card font-semibold text-[18px] flex items-center justify-center gap-2 bg-green-primary hover:bg-green-deep text-white transition-all shadow-md active:scale-[0.985] cursor-pointer"
         >
-          <span>Continue to Hormonal & Cycle Context</span>
+          <span>Continue to Hormonal &amp; Cycle Context (Step 5 of 6)</span>
           <span>→</span>
         </button>
       </div>

@@ -33,7 +33,7 @@ export const DEMO_PATIENT_PAYLOAD: GenoRootIntakePayload = {
     products: {
       'OTC/Medicated Shampoos': { used: false, duration: null, helped: null, side_effects: null },
       'Hair Oils/Serums': { used: false, duration: null, helped: null, side_effects: null },
-      'Topical Minoxidil': { used: true, duration: '3-6mo', helped: true, side_effects: false },
+      'Topical Minoxidil': { used: true, duration: '3-6mo', helped: true, side_effects: true },
       'Oral Minoxidil': { used: false, duration: null, helped: null, side_effects: null },
       'Supplements': { used: true, duration: '>6mo', helped: true, side_effects: false },
     },
@@ -43,8 +43,8 @@ export const DEMO_PATIENT_PAYLOAD: GenoRootIntakePayload = {
       'Hair Transplant': { done: false, sessions: null, helped: null },
       'Other': { done: false, sessions: null, helped: null },
     },
-    past_treatment_side_effects: false,
-    past_treatment_side_effects_describe: '',
+    past_treatment_side_effects: true,
+    past_treatment_side_effects_describe: 'Mild scalp itching and flaking from topical minoxidil alcohol base',
   },
   section_E: {
     sample_type: 'Saliva',

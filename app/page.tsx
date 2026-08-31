@@ -171,9 +171,7 @@ export default function GenoRootIntakePage() {
 
         {currentStep === 6 && (
           <Block6Consent
-            dataD={payload.section_D}
             dataE={payload.section_E}
-            onChangeD={(sectionD) => setPayload({ ...payload, section_D: sectionD })}
             onChangeE={(sectionE) => setPayload({ ...payload, section_E: sectionE })}
             onSubmit={handleFinalSubmit}
             isSubmitting={isSubmitting}
