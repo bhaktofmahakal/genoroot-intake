@@ -106,16 +106,16 @@ export const MicButton: React.FC<MicButtonProps> = ({
               <div className="w-12 h-12 rounded-full bg-surface-tint-sage text-green-primary flex items-center justify-center flex-shrink-0 shadow-xs">
                 <Mic className="w-6 h-6" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-0.5">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[17px] sm:text-[18px] font-bold text-green-deep">
                     {title}
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider bg-green-primary/10 text-green-primary px-2 py-0.5 rounded-md">
-                    <Sparkles className="w-3 h-3" /> Voice AI
+                  <span className="inline-flex whitespace-nowrap items-center gap-1 text-[11px] font-bold uppercase tracking-wider bg-surface-tint-sage text-green-deep border border-green-primary/30 px-2 py-0.5 rounded-md flex-shrink-0">
+                    <Sparkles className="w-3 h-3 text-green-primary" /> Voice AI
                   </span>
                 </div>
-                <div className="text-[13px] text-ink-muted mt-0.5">
+                <div className="text-[13px] text-ink-muted">
                   {scopeText}
                 </div>
               </div>

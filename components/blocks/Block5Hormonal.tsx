@@ -118,14 +118,14 @@ export const Block5Hormonal: React.FC<Block5HormonalProps> = ({
         </div>
       </div>
 
-      {/* Sticky Bottom Action Bar */}
-      <div className="sticky bottom-0 z-30 bg-canvas/95 backdrop-blur-md pt-3 pb-6 border-t border-border-hairline/60 -mx-4 px-4 sm:mx-0 sm:px-0">
+      {/* Bottom Action Bar */}
+      <div className="pt-6 pb-12 border-t border-border-hairline mt-4 flex flex-col gap-2">
         <button
           type="button"
           onClick={onNext}
           className="w-full min-h-[54px] rounded-card font-semibold text-[18px] flex items-center justify-center gap-2 bg-green-primary hover:bg-green-deep text-white transition-all shadow-md active:scale-[0.985] cursor-pointer"
         >
-          <span>Continue to Final Review &amp; Consent</span>
+          <span>Continue to Final Review &amp; Consent (Step 6 of 6)</span>
           <span>→</span>
         </button>
       </div>

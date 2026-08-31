@@ -304,8 +304,8 @@ export const Block4Treatments: React.FC<Block4TreatmentsProps> = ({
         </div>
       </div>
 
-      {/* Sticky Bottom Action Bar */}
-      <div className="sticky bottom-0 z-30 bg-canvas/95 backdrop-blur-md pt-3 pb-6 border-t border-border-hairline/60 -mx-4 px-4 sm:mx-0 sm:px-0">
+      {/* Bottom Action Bar */}
+      <div className="pt-6 pb-12 border-t border-border-hairline mt-4 flex flex-col gap-2">
         <button
           type="button"
           onClick={onNext}

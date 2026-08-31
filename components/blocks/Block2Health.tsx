@@ -106,8 +106,8 @@ export const Block2Health: React.FC<Block2HealthProps> = ({
         />
       </div>
 
-      {/* Sticky Bottom Action Bar */}
-      <div className="sticky bottom-0 z-30 bg-canvas/95 backdrop-blur-md pt-3 pb-6 border-t border-border-hairline/60 -mx-4 px-4 sm:mx-0 sm:px-0">
+      {/* Bottom Action Bar */}
+      <div className="pt-6 pb-12 border-t border-border-hairline mt-4 flex flex-col gap-2">
         <button
           type="button"
           onClick={onNext}
@@ -118,7 +118,7 @@ export const Block2Health: React.FC<Block2HealthProps> = ({
               : 'bg-border-hairline text-ink-muted cursor-not-allowed opacity-70'
           }`}
         >
-          <span>Continue to Lifestyle & Triggers</span>
+          <span>Continue to Lifestyle &amp; Triggers (Step 3 of 6)</span>
           <span>→</span>
         </button>
       </div>
