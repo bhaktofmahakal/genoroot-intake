@@ -51,7 +51,10 @@ export const Block2Health: React.FC<Block2HealthProps> = ({
     onChange({ ...data, excess_body_facial_hair: val });
   };
 
-  const isValid = data.diagnosed_conditions.length > 0;
+  const isValid =
+    data.diagnosed_conditions.length > 0 &&
+    data.adult_acne_oily_skin !== null &&
+    data.excess_body_facial_hair !== null;
 
   return (
     <div className="flex flex-col gap-6 block-enter">

@@ -72,12 +72,12 @@ export const Block5Hormonal: React.FC<Block5HormonalProps> = ({
   onChange,
   onNext,
 }) => {
-  // Determine selected option ID
+  // Determine selected option ID (null if not yet selected by patient)
   const selectedOption = MERGED_OPTIONS.find(
     (opt) =>
       opt.menstrual === data.menstrual_cycle &&
       opt.pregnancy === data.pregnancy_related
-  ) || MERGED_OPTIONS[MERGED_OPTIONS.length - 1]; // default to not_applicable
+  );
 
   const handleSelect = (opt: MergedHormonalOption) => {
     onChange({
@@ -87,12 +87,14 @@ export const Block5Hormonal: React.FC<Block5HormonalProps> = ({
     });
   };
 
+  const isValid = !!selectedOption;
+
   return (
     <div className="flex flex-col gap-6 block-enter">
       {/* Section Title & Description */}
       <div className="flex flex-col gap-1.5">
         <h1 className="text-[24px] sm:text-[28px] font-bold text-green-deep leading-tight">
-          Hormonal & Reproductive Context
+          Hormonal &amp; Reproductive Context
         </h1>
         <p className="text-[16px] text-ink-secondary leading-relaxed">
           Estrogen, progesterone, and androgen shifts are primary drivers of follicle cycling. Please select the option that best reflects your current status.
@@ -111,7 +113,7 @@ export const Block5Hormonal: React.FC<Block5HormonalProps> = ({
               key={opt.id}
               label={opt.label}
               sublabel={opt.sublabel}
-              selected={selectedOption.id === opt.id}
+              selected={selectedOption?.id === opt.id}
               onClick={() => handleSelect(opt)}
             />
           ))}
@@ -123,7 +125,12 @@ export const Block5Hormonal: React.FC<Block5HormonalProps> = ({
         <button
           type="button"
           onClick={onNext}
-          className="w-full min-h-[54px] rounded-card font-semibold text-[18px] flex items-center justify-center gap-2 bg-green-primary hover:bg-green-deep text-white transition-all shadow-md active:scale-[0.985] cursor-pointer"
+          disabled={!isValid}
+          className={`w-full min-h-[54px] rounded-card font-semibold text-[18px] flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.985] ${
+            isValid
+              ? 'bg-green-primary hover:bg-green-deep text-white cursor-pointer'
+              : 'bg-border-hairline text-ink-muted cursor-not-allowed opacity-70'
+          }`}
         >
           <span>Continue to Final Review &amp; Consent (Step 6 of 6)</span>
           <span>→</span>

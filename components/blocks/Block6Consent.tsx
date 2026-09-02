@@ -30,7 +30,7 @@ export const Block6Consent: React.FC<Block6ConsentProps> = ({
     onChangeE({ ...dataE, consent: !dataE.consent as any });
   };
 
-  const canSubmit = dataE.consent === true;
+  const canSubmit = dataE.consent === true && Boolean(dataE.sample_type);
 
   return (
     <div className="flex flex-col gap-6 block-enter">

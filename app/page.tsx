@@ -83,18 +83,46 @@ export default function GenoRootIntakePage() {
 
   const handleFinalSubmit = () => {
     setIsSubmitting(true);
-    const updatedPayload = {
+    const sanitizedPayload: GenoRootIntakePayload = {
       ...payload,
       submitted_at: new Date().toISOString(),
+      section_B: {
+        ...payload.section_B,
+        menstrual_cycle: payload.section_B.menstrual_cycle || 'Not applicable',
+        pregnancy_related: payload.section_B.pregnancy_related || 'Not applicable',
+        adult_acne_oily_skin: Boolean(payload.section_B.adult_acne_oily_skin),
+        excess_body_facial_hair: Boolean(payload.section_B.excess_body_facial_hair),
+      },
+      section_C: {
+        ...payload.section_C,
+        habits: {
+          ...payload.section_C.habits,
+          smoking: Boolean(payload.section_C.habits.smoking),
+          alcohol: Boolean(payload.section_C.habits.alcohol),
+          hard_water: Boolean(payload.section_C.habits.hard_water),
+          hair_wash_frequency: payload.section_C.habits.hair_wash_frequency || 'Alternate Days',
+          heating_tools_styling_chemicals: Boolean(payload.section_C.habits.heating_tools_styling_chemicals),
+          salon_treatments: Boolean(payload.section_C.habits.salon_treatments),
+        },
+      },
+      section_D: {
+        ...payload.section_D,
+        past_treatment_side_effects: Boolean(payload.section_D.past_treatment_side_effects),
+      },
+      section_E: {
+        ...payload.section_E,
+        sample_type: payload.section_E.sample_type || 'Saliva',
+        consent: Boolean(payload.section_E.consent) as true,
+      },
     };
 
     // Validate payload against master schema
-    const validation = GenoRootIntakePayloadSchema.safeParse(updatedPayload);
+    const validation = GenoRootIntakePayloadSchema.safeParse(sanitizedPayload);
     if (!validation.success) {
       console.warn('Validation warnings on submission:', validation.error.format());
     }
 
-    setPayload(updatedPayload);
+    setPayload(sanitizedPayload);
     setIsSubmitting(false);
     handleNext();
   };
